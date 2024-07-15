@@ -13,3 +13,10 @@
     mask-image: linear-gradient(180deg , #000 60%, transparent);
 
 }
+
+.flexcenter{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 4px;
+}

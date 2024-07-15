@@ -1,6 +1,6 @@
 import { Note } from "../models/note";
 
-async function fecheData(input: RequestInfo, init?: RequestInit ) {
+ async function fecheData(input: RequestInfo, init?: RequestInit ) {
     
         const response = await fetch(input, init);
          if (response.ok){
@@ -20,9 +20,32 @@ export async function fecheNotes(): Promise<Note[]> {
 }
 
 
-export async function createNotes(note: Note): Promise<Note> {
+export interface NoteInput {
+    title: string;
+    text?: string;
+}
+
+export async function createNotes(note: NoteInput): Promise<Note> {
     const response = await fecheData('/api/notes', {
         method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(note)
+    });
+    return response.json();
+}
+
+export async function deleteNotes(noteId: string) {
+    await fecheData(`/api/notes/${noteId}`, {
+        method: 'DELETE'
+    });
+}
+
+
+export async function updateNotes(noteId: string, note: NoteInput): Promise<Note> {
+    const response = await fecheData(`/api/notes/${noteId}`, {
+        method: 'PUT',
         headers: {
             'Content-Type': 'application/json'
         },
