@@ -3,6 +3,10 @@ import express, { NextFunction, Request,Response } from "express";
 import notesRoutes from "./routes/notes";
 import morgan from "morgan";
 import createHttpError,{isHttpError} from "http-errors";
+import userRouts from "./routes/user";
+import session from "express-session";
+import env from "./util/validateEnv";
+import MongoStore from "connect-mongo";
 
 
 const app = express();
@@ -10,6 +14,19 @@ const app = express();
 app.use(morgan("dev"));
 app.use(express.json());
 
+app.use(session({
+  secret: env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    maxAge: 1000 * 60 * 60 * 24,
+    
+  },
+  rolling: true,
+  store: MongoStore.create({ mongoUrl: env.MONGO_CONNECTION_STRING }),
+}));
+
+app.use("/api/users", userRouts);
 app.use("/api/notes", notesRoutes);
 
 

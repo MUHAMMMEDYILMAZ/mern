@@ -14,3 +14,14 @@
     margin-left: auto;
     margin-right: auto;
 }
+
+.notePage{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.notesGrid{
+    width: 100%;
+    
+}
